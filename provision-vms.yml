@@ -18,16 +18,3 @@
     - name: Wait for connection to be available
       wait_for_connection:
         timeout: 60
-
-- name: Install common
-  hosts: vms
-  become: yes
-  roles:
-    - common
-
-- name: Setup Docker host
-  hosts: docker.home.remigourdon.net
-  become: yes
-  roles:
-    - docker
-    - unifi
