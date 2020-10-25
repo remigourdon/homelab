@@ -1,0 +1,3 @@
+---
+project_name: unifi
+project_dir: "/opt/docker/{{ project_name }}"
