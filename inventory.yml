@@ -1,0 +1,12 @@
+all:
+  hosts:
+    proxmox.home.remigourdon.net:
+    endeavour.home.remigourdon.net:
+    hass.home.remigourdon.net:
+    docker.home.remigourdon.net:
+  children:
+    vms:
+      hosts:
+        endeavour.home.remigourdon.net:
+        hass.home.remigourdon.net:
+        docker.home.remigourdon.net:

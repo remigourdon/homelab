@@ -1,0 +1,7 @@
+---
+proxmox_node: pve
+mac_address: da:1a:ce:ab:23:28
+vm_id: 201
+cores: 4
+memory: 4096
+disk_gb: 8
