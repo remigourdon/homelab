@@ -31,7 +31,7 @@
 
 - name: Allow user to access Docker socket
   user:
-    name: '{{ ansible_user_id }}'
+    name: "{{ ansible_user }}"
     groups: docker
     append: true
   notify: restart docker
@@ -41,3 +41,6 @@
     name: docker
     enabled: true
     state: started
+
+- include_tasks: docker-compose.yml
+  when: docker_install_compose | bool
