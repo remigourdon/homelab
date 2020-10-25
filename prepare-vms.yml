@@ -18,3 +18,10 @@
     - name: Wait for connection to be available
       wait_for_connection:
         timeout: 60
+
+- name: Setup Docker host
+  hosts: docker.home.remigourdon.net
+  gather_facts: no
+  become: yes
+  roles:
+    - docker
