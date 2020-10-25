@@ -1,0 +1,22 @@
+---
+- name: Stop VM
+  proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_password: "{{ api_password }}"
+    vmid: "{{ vm_id }}"
+    timeout: 60
+    state: stopped
+  notify: sleep
+
+- meta: flush_handlers
+
+- name: Destroy VM
+  proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_password: "{{ api_password }}"
+    vmid: "{{ vm_id }}"
+    timeout: 60
+    state: absent
+  notify: sleep
