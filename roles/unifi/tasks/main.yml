@@ -1,0 +1,16 @@
+- name: Create project directory
+  file:
+    path: "{{ project_dir }}/compose"
+    recurse: yes
+    state: directory
+
+- name: Copy Docker Compose template
+  template:
+    src: "templates/docker-compose.yml.j2"
+    dest: "{{ project_dir }}/compose/docker-compose.yml"
+
+- name: Install Unifi Controller with Docker Compose
+  docker_compose:
+    project_name: "{{ project_name }}"
+    project_src: "{{ project_dir }}/compose"
+    state: present

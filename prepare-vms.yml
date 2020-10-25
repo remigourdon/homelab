@@ -30,3 +30,4 @@
   become: yes
   roles:
     - docker
+    - unifi
