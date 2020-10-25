@@ -1,0 +1,89 @@
+---
+- name: Clone template and create VM
+  proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_password: "{{ api_password }}"
+    node: "{{ proxmox_node }}"
+    clone: "{{ template_name }}"
+    full: yes
+    name: "{{ inventory_hostname_short }}"
+    newid: "{{ vm_id }}"
+    timeout: 60
+    state: present
+  register: created_vm
+  notify: sleep
+ 
+- meta: flush_handlers
+
+- name: Allocate VM resources
+  proxmox_kvm:
+    api_host: "{{ api_host }}"
+    api_user: "{{ api_user }}"
+    api_password: "{{ api_password }}"
+    node: "{{ proxmox_node }}"
+    vmid: "{{ vm_id }}"
+    cores: '{{ cores | default(cores) }}'
+    memory: '{{ memory | default(memory) }}'
+    onboot: '{{ on_boot | default(on_boot) }}'
+    timeout: 60
+    update: yes
+  when: created_vm.changed
+
+- name: Get API token
+  uri:
+    url: "https://{{ api_host }}:8006/api2/json/access/ticket"
+    validate_certs: no
+    method: POST
+    body_format: form-urlencoded
+    body:
+      username: "{{ api_user }}"
+      password: "{{ api_password }}"
+    status_code: 200
+  register: auth
+  when: created_vm.changed
+  changed_when: auth.status == 200
+
+- name: Set VM MAC addresse
+  uri:
+    url: "https://{{ api_host }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ vm_id }}/config"
+    validate_certs: no
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      net0: "{{ 'virtio,bridge=vmbr0,macaddr=' + mac_address | default(network_interface) }}"
+    status_code: 200
+  register: response
+  when: created_vm.changed
+  changed_when: response.status == 200
+
+- name: Resize VM disk
+  uri:
+    url: "https://{{ api_host }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ vm_id }}/resize"
+    validate_certs: no
+    method: PUT
+    headers:
+      Cookie: "PVEAuthCookie={{ auth.json.data.ticket }}"
+      CSRFPreventionToken: "{{ auth.json.data.CSRFPreventionToken }}"
+    body_format: form-urlencoded
+    body:
+      disk: scsi0
+      size: "{{ disk_gb }}G"
+    status_code: 200
+  register: response
+  when: created_vm.changed
+  changed_when: response.status == 200
+
+- name: Start VM
+  proxmox_kvm:
+    api_user: "{{ api_user }}"
+    api_password: "{{ api_password }}"
+    api_host: "{{ api_host }}"
+    node: "{{ proxmox_node }}"
+    name: "{{ inventory_hostname_short }}"
+    timeout: 60
+    state: started
+  notify: sleep
