@@ -1,9 +1,9 @@
 ---
 - name: Clone template and create VM
   proxmox_kvm:
-    api_host: "{{ api_host }}"
-    api_user: "{{ api_user }}"
-    api_password: "{{ api_password }}"
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
     node: "{{ proxmox_node }}"
     clone: "{{ template_name }}"
     full: yes
@@ -18,10 +18,9 @@
 
 - name: Allocate VM resources
   proxmox_kvm:
-    api_host: "{{ api_host }}"
-    api_user: "{{ api_user }}"
-    api_password: "{{ api_password }}"
-    node: "{{ proxmox_node }}"
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
     vmid: "{{ vm_id }}"
     cores: '{{ cores | default(cores) }}'
     memory: '{{ memory | default(memory) }}'
@@ -32,13 +31,13 @@
 
 - name: Get API token
   uri:
-    url: "https://{{ api_host }}:8006/api2/json/access/ticket"
+    url: "https://{{ proxmox_api_host }}:8006/api2/json/access/ticket"
     validate_certs: no
     method: POST
     body_format: form-urlencoded
     body:
-      username: "{{ api_user }}"
-      password: "{{ api_password }}"
+      username: "{{ proxmox_api_user }}"
+      password: "{{ proxmox_api_password }}"
     status_code: 200
   register: auth
   when: created_vm.changed
@@ -46,7 +45,7 @@
 
 - name: Set VM MAC addresse
   uri:
-    url: "https://{{ api_host }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ vm_id }}/config"
+    url: "https://{{ proxmox_api_host }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ vm_id }}/config"
     validate_certs: no
     method: PUT
     headers:
@@ -62,7 +61,7 @@
 
 - name: Resize VM disk
   uri:
-    url: "https://{{ api_host }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ vm_id }}/resize"
+    url: "https://{{ proxmox_api_host }}:8006/api2/json/nodes/{{ proxmox_node }}/qemu/{{ vm_id }}/resize"
     validate_certs: no
     method: PUT
     headers:
@@ -79,9 +78,9 @@
 
 - name: Start VM
   proxmox_kvm:
-    api_user: "{{ api_user }}"
-    api_password: "{{ api_password }}"
-    api_host: "{{ api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    api_host: "{{ proxmox_api_host }}"
     node: "{{ proxmox_node }}"
     name: "{{ inventory_hostname_short }}"
     timeout: 60
