@@ -1,0 +1,3 @@
+---
+project_name: heimdall
+project_dir: "/home/{{ ansible_user }}/{{ project_name }}"

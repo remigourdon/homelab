@@ -11,3 +11,4 @@
   roles:
     - docker
     - unifi
+    - heimdall
