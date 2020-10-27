@@ -1,3 +1,4 @@
 ---
 project_name: unifi
 project_dir: "/home/{{ ansible_user }}/{{ project_name }}"
+unifi_tag: 5.14.23-ls76

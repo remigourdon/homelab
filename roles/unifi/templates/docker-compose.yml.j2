@@ -2,7 +2,7 @@
 version: "2.1"
 services:
   unifi-controller:
-    image: linuxserver/unifi-controller
+    image: linuxserver/unifi-controller:{{ unifi_tag }}
     container_name: unifi-controller
     environment:
       - PUID=1000
