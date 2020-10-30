@@ -9,6 +9,16 @@
     src: "templates/docker-compose.yml.j2"
     dest: "{{ project_dir }}/compose/docker-compose.yml"
 
+- name: Create Docker volume using NFS
+  docker_volume:
+    name: "nfs-{{ project_name }}"
+    driver: local
+    driver_options:
+      type: nfs
+      device: ":/mnt/NAS/nfs-docker/{{ project_name }}"
+      o: "addr=truenas.home.remigourdon.net,soft,rw,nfsvers=4"
+    state: present
+
 - name: Install with Docker Compose
   docker_compose:
     project_name: "{{ project_name }}"

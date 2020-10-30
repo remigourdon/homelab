@@ -1,16 +1,21 @@
 ---
 version: "2.1"
+
 services:
-  heimdall:
+  {{ project_name }}:
     image: linuxserver/heimdall
-    container_name: heimdall
+    container_name: {{ project_name }}
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
     volumes:
-      - {{ project_dir }}/config:/config
+      - nfs-{{ project_name }}:/config
     ports:
       - 80:80
       - 443:443
     restart: unless-stopped
+
+volumes:
+  nfs-{{ project_name }}:
+    external: true
