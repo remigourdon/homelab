@@ -2,19 +2,20 @@
 version: "3"
 
 services:
-  unifi:
+  {{ project_name }}:
     image: linuxserver/unifi-controller:5.14.23-ls76
     container_name: unifi
     environment:
       - PUID=1000
       - PGID=1000
+    networks:
+      - traefik 
     volumes:
       - nfs-config:/config
-    ports:
-      - 3478:3478/udp
-      - 10001:10001/udp
-      - 8080:8080
-      - 8443:8443
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.{{ project_name }}.loadbalancer.server.port=8080"
+      - "traefik.http.routers.{{ project_name }}.rule=Host(`{{ project_name }}.docker.home.remigourdon.net`)"
     restart: unless-stopped
 
 volumes:
@@ -24,3 +25,7 @@ volumes:
       type: nfs
       o: addr=truenas.home.remigourdon.net,soft,rw,tcp,nfsvers=4
       device: ":/mnt/NAS/nfs-docker/{{ project_name }}"
+
+networks:
+  traefik:
+    external: true

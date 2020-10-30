@@ -1,0 +1,19 @@
+---
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: traefik:v2.3.2
+    container_name: traefik
+    networks:
+      - traefik 
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --api.insecure=true --providers.docker
+
+networks:
+  traefik:
+    name: traefik

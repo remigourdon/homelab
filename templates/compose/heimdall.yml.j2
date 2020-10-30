@@ -2,18 +2,21 @@
 version: "3"
 
 services:
-  heimdall:
+  {{ project_name }}:
     image: linuxserver/heimdall
     container_name: heimdall
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
+    networks:
+      - traefik 
     volumes:
       - nfs-config:/config
-    ports:
-      - 80:80
-      - 443:443
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.{{ project_name }}.loadbalancer.server.port=80"
+      - "traefik.http.routers.{{ project_name }}.rule=Host(`{{ project_name }}.docker.home.remigourdon.net`)"
     restart: unless-stopped
 
 volumes:
@@ -23,3 +26,7 @@ volumes:
       type: nfs
       o: addr=truenas.home.remigourdon.net,soft,rw,tcp,nfsvers=4
       device: ":/mnt/NAS/nfs-docker/{{ project_name }}"
+
+networks:
+  traefik:
+    external: true
