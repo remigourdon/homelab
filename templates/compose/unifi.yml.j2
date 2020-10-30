@@ -1,0 +1,26 @@
+---
+version: "3"
+
+services:
+  unifi:
+    image: linuxserver/unifi-controller:5.14.23-ls76
+    container_name: unifi
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - nfs-config:/config
+    ports:
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 8443:8443
+    restart: unless-stopped
+
+volumes:
+  nfs-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=truenas.home.remigourdon.net,soft,rw,tcp,nfsvers=4
+      device: ":/mnt/NAS/nfs-docker/{{ project_name }}"

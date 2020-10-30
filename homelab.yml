@@ -9,6 +9,8 @@
   hosts: docker.home.remigourdon.net
   become: yes
   roles:
-    - docker
-    - unifi
-    - heimdall
+    - role: docker
+    - role: docker-compose
+      project_names:
+        - unifi
+        - heimdall

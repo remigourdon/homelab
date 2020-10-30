@@ -47,8 +47,3 @@
   pip:
     name: docker
     state: present
-
-- name: Install Docker Compose with Python
-  pip:
-    name: docker-compose
-    state: present

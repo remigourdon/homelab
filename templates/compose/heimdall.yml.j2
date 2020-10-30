@@ -1,0 +1,25 @@
+---
+version: "3"
+
+services:
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - nfs-config:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
+volumes:
+  nfs-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=truenas.home.remigourdon.net,soft,rw,tcp,nfsvers=4
+      device: ":/mnt/NAS/nfs-docker/{{ project_name }}"

@@ -1,0 +1,11 @@
+---
+- name: Install Docker Compose with Python
+  pip:
+    name: docker-compose
+    state: present
+
+- name: Set up compose projects
+  include_tasks: compose-project.yml
+  loop: "{{ project_names }}"
+  loop_control:
+    loop_var: project_name
