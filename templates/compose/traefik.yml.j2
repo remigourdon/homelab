@@ -9,10 +9,42 @@ services:
       - traefik 
     ports:
       - 80:80
-      - 8080:8080
+      - 443:443
     volumes:
+      - nfs-letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.myresolver.acme.email={{ cloudflare_email }}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    environment:
+      CLOUDFLARE_ZONE_API_TOKEN: {{ cloudflare_api_tokens.zone }}
+      CLOUDFLARE_DNS_API_TOKEN: {{ cloudflare_api_tokens.dns }}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.dashboard.rule: Host(`{{ project_domain }}`)
+      traefik.http.routers.dashboard.entrypoints: websecure
+      traefik.http.routers.dashboard.tls.certresolver: myresolver
+      traefik.http.routers.dashboard.service: api@internal
+      traefik.http.routers.dashboard.middlewares: auth
+      traefik.http.middlewares.auth.basicauth.users: admin:$$1$$ocClWhRI$$Uk9JflHgXFgYpgSRV6C070
+
+volumes:
+  nfs-letsencrypt:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/letsencrypt"
 
 networks:
   traefik:

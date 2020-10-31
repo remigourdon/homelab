@@ -13,9 +13,10 @@ services:
     volumes:
       - nfs-config:/config
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.{{ project_name }}.loadbalancer.server.port=8080"
-      - "traefik.http.routers.{{ project_name }}.rule=Host(`{{ project_name }}.docker.home.remigourdon.net`)"
+      traefik.enable: true
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
     restart: unless-stopped
 
 volumes:
@@ -23,8 +24,8 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=truenas.home.remigourdon.net,soft,rw,tcp,nfsvers=4
-      device: ":/mnt/NAS/nfs-docker/{{ project_name }}"
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}"
 
 networks:
   traefik:
