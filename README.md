@@ -8,7 +8,7 @@ Currently only the Proxmox VMs are managed with Ansible, but ideally the rest of
 
 Here is a (partial) list of TODOs:
 
-+ [ ] Install internal reverse proxy for Docker host (Traefik?)
++ [x] Install internal reverse proxy for Docker host (Traefik?)
 + [ ] Bring router and pfSense management into Ansible
 + [ ] Get rid of Bash script for Proxmox templating and either:
   + Create an Ansible role
