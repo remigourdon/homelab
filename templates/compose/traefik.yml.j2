@@ -31,7 +31,7 @@ services:
       CLOUDFLARE_DNS_API_TOKEN: {{ cloudflare_api_tokens.dns }}
     labels:
       traefik.enable: true
-      traefik.http.routers.dashboard.rule: Host(`docker.home.remigourdon.net`)
+      traefik.http.routers.dashboard.rule: Host(`{{ project_domain }}`)
       traefik.http.routers.dashboard.entrypoints: websecure
       traefik.http.routers.dashboard.tls.certresolver: myresolver
       traefik.http.routers.dashboard.service: api@internal
@@ -43,8 +43,8 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=truenas.home.remigourdon.net,soft,rw,tcp,nfsvers=4
-      device: ":/mnt/NAS/nfs-docker/{{ project_name }}/letsencrypt"
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/letsencrypt"
 
 networks:
   traefik:
