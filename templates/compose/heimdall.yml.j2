@@ -15,8 +15,9 @@ services:
       - nfs-config:/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.{{ project_name }}.loadbalancer.server.port=80"
       - "traefik.http.routers.{{ project_name }}.rule=Host(`{{ project_name }}.docker.home.remigourdon.net`)"
+      - "traefik.http.routers.{{ project_name }}.entrypoints=websecure"
+      - "traefik.http.routers.{{ project_name }}.tls.certresolver=myresolver"
     restart: unless-stopped
 
 volumes:
