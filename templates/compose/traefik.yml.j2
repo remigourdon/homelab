@@ -10,6 +10,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 3478:3478/udp
     volumes:
       - nfs-letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
@@ -23,6 +24,7 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.unifi-stun.address=:3478/udp"
       - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.email={{ cloudflare_email }}"

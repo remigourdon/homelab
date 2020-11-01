@@ -19,6 +19,8 @@ services:
       traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
       traefik.http.routers.{{ project_name }}.entrypoints: websecure
       traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+      traefik.udp.services.unifi-stun.loadbalancer.server.port: 3478
+      traefik.udp.routers.{{ project_name }}.entrypoints: unifi-stun
     restart: unless-stopped
 
 volumes:
