@@ -16,6 +16,7 @@ services:
     command:
       - "--api=true"
       - "--api.dashboard=true"
+      - "--serverstransport.insecureskipverify=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"

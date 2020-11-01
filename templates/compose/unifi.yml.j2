@@ -14,6 +14,8 @@ services:
       - nfs-config:/config
     labels:
       traefik.enable: true
+      traefik.http.services.{{ project_name }}.loadbalancer.server.scheme: https
+      traefik.http.services.{{ project_name }}.loadbalancer.server.port: 8443
       traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
       traefik.http.routers.{{ project_name }}.entrypoints: websecure
       traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
