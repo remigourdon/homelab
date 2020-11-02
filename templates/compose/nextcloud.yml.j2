@@ -47,6 +47,9 @@ services:
       - SMTP_PORT=465
       - SMTP_NAME={{ nextcloud_smtp_name }}
       - SMTP_PASSWORD={{ nextcloud_smtp_password }}
+      - MAIL_FROM_ADDRESS=info
+      - MAIL_DOMAIN={{ project_name }}.{{ project_domain }}
+
     networks:
       - traefik
       - backend
