@@ -59,10 +59,13 @@ services:
       traefik.http.middlewares.nextcloud-caldav.redirectregex.permanent: true
       traefik.http.middlewares.nextcloud-caldav.redirectregex.regex: "^https://(.*)/.well-known/(card|cal)dav"
       traefik.http.middlewares.nextcloud-caldav.redirectregex.replacement: "https://$${1}/remote.php/dav/"
+      traefik.http.middlewares.nextcloud-sts.headers.stsincludesubdomains: true
+      traefik.http.middlewares.nextcloud-sts.headers.stspreload: true
+      traefik.http.middlewares.nextcloud-sts.headers.stsseconds: 15553000
       traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
       traefik.http.routers.{{ project_name }}.entrypoints: websecure
       traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
-      traefik.http.routers.{{ project_name }}.middlewares: nextcloud-caldav
+      traefik.http.routers.{{ project_name }}.middlewares: nextcloud-caldav,nextcloud-sts
     restart: unless-stopped
 
 volumes:
