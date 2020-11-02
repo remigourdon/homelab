@@ -8,11 +8,14 @@
 - name: Setup Docker host
   hosts: docker.home.remigourdon.net
   become: yes
-  vars_files: vars/cloudflare.yml
+  vars_files:
+    - vars/cloudflare.yml
+    - vars/nextcloud.yml
   roles:
     - role: docker
     - role: docker-compose
       project_names:
         - traefik
-        - unifi
         - heimdall
+        - unifi
+        - nextcloud

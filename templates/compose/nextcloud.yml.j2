@@ -1,0 +1,92 @@
+---
+version: "3"
+
+services:
+
+  db:
+    image: mariadb:10.5
+    container_name: nextcloud-db
+    networks:
+      - backend
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: unless-stopped
+    volumes:
+      - nfs-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ nextcloud_mysql_root_password }}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD={{ nextcloud_mysql_password }}
+
+  redis:
+    image: redis:6.0
+    container_name: nextcloud-redis
+    command: redis-server --requirepass {{ nextcloud_redis_password }}
+    networks:
+      - backend
+    restart: unless-stopped
+
+  app:
+    image: nextcloud:20.0
+    container_name: nextcloud-app
+    environment:
+      - NEXTCLOUD_ADMIN_USER=remi
+      - NEXTCLOUD_ADMIN_PASSWORD={{ nextcloud_admin_password }}
+      - NEXTCLOUD_TRUSTED_DOMAINS={{ project_name }}.{{ project_domain }}
+      - TRUSTED_PROXIES={{ ansible_eth0.ipv4.address }}
+      - OVERWRITEHOST={{ project_name }}.{{ project_domain }}
+      - OVERWRITEPROTOCOL=https
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD={{ nextcloud_mysql_password }}
+      - REDIS_HOST=redis
+      - REDIS_HOST_PASSWORD={{ nextcloud_redis_password }}
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_SECURE=ssl
+      - SMTP_PORT=465
+      - SMTP_NAME={{ nextcloud_smtp_name }}
+      - SMTP_PASSWORD={{ nextcloud_smtp_password }}
+    networks:
+      - traefik
+      - backend
+    volumes:
+      - nfs-config:/var/www/html
+      - nfs-data:/var/www/html/data
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.http.middlewares.nextcloud-caldav.redirectregex.permanent: true
+      traefik.http.middlewares.nextcloud-caldav.redirectregex.regex: "^https://(.*)/.well-known/(card|cal)dav"
+      traefik.http.middlewares.nextcloud-caldav.redirectregex.replacement: "https://$${1}/remote.php/dav/"
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+      traefik.http.routers.{{ project_name }}.middlewares: nextcloud-caldav
+    restart: unless-stopped
+
+volumes:
+  nfs-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ nextcloud_nfs_dir }}"
+  nfs-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/config"
+  nfs-db:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/db"
+
+networks:
+  traefik:
+    external: true
+  backend:
+    external: false
