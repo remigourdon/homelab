@@ -40,6 +40,7 @@ services:
       traefik.http.routers.dashboard.service: api@internal
       traefik.http.routers.dashboard.middlewares: auth
       traefik.http.middlewares.auth.basicauth.users: admin:$$1$$ocClWhRI$$Uk9JflHgXFgYpgSRV6C070
+    restart: unless-stopped
 
 volumes:
   nfs-letsencrypt:
