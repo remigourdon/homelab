@@ -35,7 +35,11 @@
     name: "{{ ansible_user }}"
     groups: docker
     append: true
-  notify: restart docker
+
+- name: Restart Docker
+  systemd:
+    name: docker
+    state: restarted
 
 - name: Enable Docker service
   systemd:
