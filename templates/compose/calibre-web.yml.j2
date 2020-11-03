@@ -1,0 +1,40 @@
+---
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: linuxserver/calibre-web
+    container_name: calibre-web
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    networks:
+      - traefik 
+    volumes:
+      - nfs-config:/config
+      - nfs-data:/books:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+    restart: unless-stopped
+
+volumes:
+  nfs-config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}"
+  nfs-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,ro,tcp,nfsvers=4
+      device: ":/mnt/NAS/remi/calibre"
+
+networks:
+  traefik:
+    external: true

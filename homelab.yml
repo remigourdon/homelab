@@ -14,5 +14,6 @@
     - role: docker-compose
       project_names:
         - traefik
-        - unifi
         - heimdall
+        - unifi
+        - calibre-web
