@@ -1,0 +1,73 @@
+---
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: gitea/gitea:1.12
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - DB_TYPE=mysql
+      - DB_HOST=db:3306
+      - DB_NAME={{ gitea_db_name }}
+      - DB_USER={{ gitea_db_user }}
+      - DB_PASSWD={{ gitea_db_password }}
+      - PROTOCOL=https
+      - DOMAIN={{ project_name }}.{{ project_domain }}
+      - ROOT_URL=https://{{ project_name }}.{{ project_domain }}
+      - LOCAL_ROOT_URL=https://{{ project_name }}.{{ project_domain }}
+      - SSH_DOMAIN={{ project_name }}.{{ project_domain }}
+      - RUN_MODE=prod
+      - DISABLE_REGISTRATION=true
+      - REQUIRE_SIGNIN_VIEW=true
+    networks:
+      - traefik 
+      - backend
+    volumes:
+      - nfs-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.http.services.{{ project_name }}.loadbalancer.server.port: 3000
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+    restart: unless-stopped
+
+  db:
+    image: mysql:5.7
+    container_name: gitea-db
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ gitea_db_root_password }}
+      - MYSQL_DATABASE={{ gitea_db_name }}
+      - MYSQL_USER={{ gitea_db_user }}
+      - MYSQL_PASSWORD={{ gitea_db_password }}
+    networks:
+      - backend
+    volumes:
+      - nfs-db:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  nfs-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/data"
+  nfs-db:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/db"
+
+networks:
+  traefik:
+    external: true
+  backend:
+    external: false
+

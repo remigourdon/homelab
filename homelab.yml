@@ -8,7 +8,9 @@
 - name: Setup Docker host
   hosts: docker.home.remigourdon.net
   become: yes
-  vars_files: vars/cloudflare.yml
+  vars_files:
+    - vars/cloudflare.yml
+    - vars/gitea.yml
   roles:
     - role: docker
     - role: docker-compose
@@ -17,3 +19,4 @@
         - heimdall
         - unifi
         - calibre-web
+        - gitea
