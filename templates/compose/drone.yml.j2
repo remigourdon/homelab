@@ -6,6 +6,7 @@ services:
     image: drone/drone:1.9
     container_name: {{ project_name }}
     environment:
+      - DRONE_GIT_ALWAYS_AUTH=true
       - DRONE_GITEA_SERVER=https://gitea.{{ project_domain }}
       - DRONE_GITEA_CLIENT_ID={{ drone_gitea_client_id }}
       - DRONE_GITEA_CLIENT_SECRET={{ drone_gitea_client_secret }}
