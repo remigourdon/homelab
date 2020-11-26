@@ -11,6 +11,7 @@
   vars_files:
     - vars/cloudflare.yml
     - vars/gitea.yml
+    - vars/drone.yml
   roles:
     - role: docker
     - role: docker-compose
@@ -20,3 +21,4 @@
         - unifi
         - calibre-web
         - gitea
+        - drone
