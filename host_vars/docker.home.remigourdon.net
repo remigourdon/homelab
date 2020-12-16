@@ -2,5 +2,5 @@
 mac_address: 74:2b:0a:f4:ce:e6
 vm_id: 202
 cores: 4
-memory: 8192
+memory: 16384
 disk_gb: 50
