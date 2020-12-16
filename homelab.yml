@@ -22,6 +22,7 @@
         - calibre-web
         - gitea
         - drone
+        - registry
 
 - name: Setup builder Docker host for Drone
   hosts: builder.home.remigourdon.net
