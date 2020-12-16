@@ -1,0 +1,48 @@
+---
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: registry:2
+    container_name: {{ project_name }}
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    networks:
+      - backend 
+    volumes:
+      - nfs-data:/var/lib/registry
+    restart: unless-stopped
+
+  {{ project_name }}-ui:
+    image: joxit/docker-registry-ui:1.5-static
+    container_name: {{ project_name }}-ui
+    environment:
+      - REGISTRY_TITLE=Home Registry
+      - REGISTRY_URL=http://{{ project_name }}:5000
+      - DELETE_IMAGES=true
+    networks:
+      - traefik
+      - backend
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+      traefik.http.routers.{{ project_name }}.middlewares: {{ project_name }}-auth
+      traefik.http.middlewares.{{ project_name }}-auth.basicauth.users: admin:$$apr1$$9mwdsDZk$$5uOqpkbaM.waJi/UKHD6k0
+    restart: unless-stopped
+
+volumes:
+  nfs-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}"
+
+networks:
+  traefik:
+    external: true
+  backend:
+    external: false

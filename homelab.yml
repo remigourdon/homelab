@@ -5,12 +5,14 @@
   roles:
     - common
 
-- name: Setup Docker host
+- name: Setup main Docker host
   hosts: docker.home.remigourdon.net
   become: yes
   vars_files:
     - vars/cloudflare.yml
     - vars/nextcloud.yml
+    - vars/gitea.yml
+    - vars/drone.yml
   roles:
     - role: docker
     - role: docker-compose
@@ -20,3 +22,19 @@
         - unifi
         - calibre-web
         - nextcloud
+        - gitea
+        - drone
+        - registry
+
+- name: Setup builder Docker host for Drone
+  hosts: builder.home.remigourdon.net
+  become: yes
+  vars_files:
+    - vars/drone.yml
+  vars:
+    docker_domain: docker.home.remigourdon.net
+  roles:
+    - role: docker
+    - role: docker-compose
+      project_names:
+        - drone-runner
