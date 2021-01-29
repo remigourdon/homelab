@@ -10,6 +10,8 @@ services:
       - PGID=1000
     networks:
       - traefik 
+    ports:
+      - 8080:8080
     volumes:
       - nfs-config:/config
     labels:
