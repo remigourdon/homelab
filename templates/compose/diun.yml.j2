@@ -13,12 +13,12 @@ services:
       - DIUN_WATCH_SCHEDULE=0 */6 * * *
       - DIUN_PROVIDERS_DOCKER=true
       - DIUN_PROVIDERS_DOCKER_WATCHSTOPPED=true
+      - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
     volumes:
       - nfs-data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       diun.enable: true
-      diun.watch_repo: true
     restart: unless-stopped
 
 volumes:
