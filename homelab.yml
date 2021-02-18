@@ -17,6 +17,7 @@
     - role: docker
     - role: docker-compose
       project_names:
+        - diun
         - traefik
         - heimdall
         - unifi
