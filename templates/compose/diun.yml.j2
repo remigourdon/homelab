@@ -14,6 +14,8 @@ services:
       - DIUN_PROVIDERS_DOCKER=true
       - DIUN_PROVIDERS_DOCKER_WATCHSTOPPED=true
       - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
+      - DIUN_NOTIF_PUSHOVER_TOKEN={{ diun_pushover_token }}
+      - DIUN_NOTIF_PUSHOVER_RECIPIENT={{ diun_pushover_recipient }}
     volumes:
       - nfs-data:/data
       - /var/run/docker.sock:/var/run/docker.sock

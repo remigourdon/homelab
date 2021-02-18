@@ -9,6 +9,7 @@
   hosts: docker.home.remigourdon.net
   become: yes
   vars_files:
+    - vars/diun.yml
     - vars/cloudflare.yml
     - vars/nextcloud.yml
     - vars/gitea.yml
