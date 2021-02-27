@@ -29,17 +29,13 @@
       - docker-ce-cli
       - containerd.io
     state: present
+  notify: restart Docker service
 
 - name: Allow user to access Docker socket
   user:
     name: "{{ ansible_user }}"
     groups: docker
     append: true
-
-- name: Restart Docker
-  systemd:
-    name: docker
-    state: restarted
 
 - name: Enable Docker service
   systemd:
@@ -51,3 +47,4 @@
   pip:
     name: docker
     state: present
+  notify: restart Docker service
