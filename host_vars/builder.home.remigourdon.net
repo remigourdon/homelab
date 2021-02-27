@@ -4,3 +4,4 @@ vm_id: 203
 cores: 4
 memory: 4096
 disk_gb: 50
+update: yes

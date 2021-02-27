@@ -1,3 +1,4 @@
 ---
 - name: Include update tasks
   include_tasks: ubuntu.yml
+  when: update
