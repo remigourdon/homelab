@@ -1,9 +1,4 @@
 ---
-- name: Update apt cache
-  apt:
-    cache_valid_time: 3600
-    update_cache: yes
-
 - name: Install apt repository management software
   apt:
     name:
