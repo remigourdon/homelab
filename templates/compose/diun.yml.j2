@@ -1,0 +1,32 @@
+---
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: crazymax/diun:latest
+    container_name: {{ project_name }}
+    environment:
+      - TZ=America/New_York
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+      - DIUN_WATCH_WORKERS=20
+      - DIUN_WATCH_SCHEDULE=0 */6 * * *
+      - DIUN_PROVIDERS_DOCKER=true
+      - DIUN_PROVIDERS_DOCKER_WATCHSTOPPED=true
+      - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
+      - DIUN_NOTIF_PUSHOVER_TOKEN={{ diun_pushover_token }}
+      - DIUN_NOTIF_PUSHOVER_RECIPIENT={{ diun_pushover_recipient }}
+    volumes:
+      - nfs-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      diun.enable: true
+    restart: unless-stopped
+
+volumes:
+  nfs-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}"
