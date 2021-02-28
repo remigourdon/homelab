@@ -21,3 +21,4 @@
   docker_compose:
     project_src: "{{ project_dir_root }}/{{ project_name }}"
     state: present
+    pull: "{{ docker_pull | default('no') }}"
