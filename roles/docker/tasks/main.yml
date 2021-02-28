@@ -48,3 +48,9 @@
     name: docker
     state: present
   notify: restart Docker service
+
+- name: Prune Docker images
+  docker_prune:
+    images: yes
+    images_filters:
+      dangling: false
