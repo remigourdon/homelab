@@ -16,6 +16,7 @@
     - vars/nextcloud.yml
     - vars/gitea.yml
     - vars/drone.yml
+    - vars/paperless.yml
   roles:
     - role: docker
     - role: docker-compose
@@ -29,6 +30,7 @@
         - gitea
         - drone
         - registry
+        - paperless
 
 - name: Setup builder Docker host for Drone
   hosts: builder.home.remigourdon.net
