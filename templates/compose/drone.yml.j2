@@ -3,7 +3,7 @@ version: "3"
 
 services:
   {{ project_name }}:
-    image: drone/drone:1.10
+    image: drone/drone:2.0
     container_name: {{ project_name }}
     environment:
       - DRONE_GIT_ALWAYS_AUTH=true

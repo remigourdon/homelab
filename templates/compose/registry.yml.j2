@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
 
   {{ project_name }}-ui:
-    image: joxit/docker-registry-ui:1.5-static
+    image: joxit/docker-registry-ui:2.0
     container_name: {{ project_name }}-ui
     environment:
       - REGISTRY_TITLE=Home Registry
