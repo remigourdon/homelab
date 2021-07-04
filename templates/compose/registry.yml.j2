@@ -18,8 +18,9 @@ services:
     container_name: {{ project_name }}-ui
     environment:
       - REGISTRY_TITLE=Home Registry
-      - REGISTRY_URL=http://{{ project_name }}:5000
+      - NGINX_PROXY_PASS_URL=http://{{ project_name }}:5000
       - DELETE_IMAGES=true
+      - SINGLE_REGISTRY=true
     networks:
       - traefik
       - backend
