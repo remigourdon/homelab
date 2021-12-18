@@ -13,7 +13,6 @@
   vars_files:
     - vars/diun.yml
     - vars/cloudflare.yml
-    - vars/nextcloud.yml
     - vars/gitea.yml
     - vars/drone.yml
     - vars/paperless.yml
@@ -26,7 +25,6 @@
         - heimdall
         - unifi
         - calibre-web
-        - nextcloud
         - gitea
         - drone
         - registry
