@@ -4,6 +4,7 @@ all:
     docker.home.remigourdon.net:
     builder.home.remigourdon.net:
     proxmox.home.remigourdon.net:
+    froufrou.home.remigourdon.net:
   children:
     vms:
       hosts:
