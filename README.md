@@ -17,3 +17,4 @@ Here is a (partial) list of TODOs:
 + [ ] Manage observability tools with Ansible (Graylog, Prometheus, Grafana)
 + [ ] Pick (the hard part) and install a Wiki (WikiJS? Bookstack?), or stick with VimWiki
 + [ ] Scan with [gitleaks](https://github.com/zricethezav/gitleaks) using a git hook and not manually!
++ [ ] Move Docker role to [geerlingguy](https://galaxy.ansible.com/geerlingguy/docker)
