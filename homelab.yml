@@ -38,6 +38,7 @@
 
 - name: Setup Pi-hole on Raspberry Pi
   hosts: froufrou.home.remigourdon.net
+  become: yes
   vars_files:
     - vars/pi-hole.yml
   roles:

@@ -1,6 +1,10 @@
 ---
 version: "3"
 
+# pfSense router configured with Google/CloudFlare as upstream DNS
+# and with pi-hole as DNS server handed out by DHCP server
+# pi-hole configured with pfSense DNS as upstream
+
 services:
   pihole:
     container_name: pihole
@@ -13,7 +17,8 @@ services:
     environment:
       TZ: 'America/New_York'
       WEBPASSWORD: {{ pi_hole_password }}
-      PIHOLE_DNS_: 192.168.50.1#5053;1.1.1.1
+      PIHOLE_DNS_: 192.168.50.1#5053
+      DNSMASQ_LISTENING: all
     volumes:
       - './etc-pihole:/etc/pihole'
       - './etc-dnsmasq.d:/etc/dnsmasq.d'
