@@ -7,22 +7,31 @@
     - role: update
       tags: update,never
 
-- name: Setup pi-hole host
-  hosts: froufrou.home.remigourdon.net
+- name: Setup tailscale
+  hosts: tailscale
+  become: yes
   tasks:
     - name: Configure Sysctl
-      become: yes
       sysctl:
         name: net.ipv4.ip_forward
         value: 1
         state: present
         ignoreerrors: true
         sysctl_set: true
-    - name: Configure Tailscale as exit node and subnet router
+      when: tailscale_subnet_router
+    - name: Configure Tailscale
       include_role:
         name: artis3n.tailscale
-      vars:
-        tailscale_args: "--advertise-exit-node --advertise-routes=192.168.50.0/24"
+
+- name: Setup Docker on Raspberry Pi
+  hosts: froufrou.home.remigourdon.net
+  vars:
+    docker_version: latest
+    docker_install_compose: true
+    pip_package: python3-pip
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker_arm
 
 - name: Setup main Docker host
   hosts: docker.home.remigourdon.net

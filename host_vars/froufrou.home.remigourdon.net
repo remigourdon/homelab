@@ -1,6 +1,8 @@
 ---
 update: true
 ansible_ssh_user: pi
+tailscale_subnet_router: yes
+tailscale_args: "--advertise-exit-node --advertise-routes=192.168.50.0/24 --accept-dns=false"
 tailscale_auth_key: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   64636230636433366461326237616562663531633438383139626339366666373065643432303832

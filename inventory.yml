@@ -11,3 +11,6 @@ all:
         endeavour.home.remigourdon.net:
         docker.home.remigourdon.net:
         builder.home.remigourdon.net:
+    tailscale:
+      hosts:
+        froufrou.home.remigourdon.net:
