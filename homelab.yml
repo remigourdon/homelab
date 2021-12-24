@@ -25,13 +25,25 @@
 
 - name: Setup Docker on Raspberry Pi
   hosts: froufrou.home.remigourdon.net
+  become: yes
   vars:
     docker_version: latest
     docker_install_compose: true
+    docker_users:
+      - pi
     pip_package: python3-pip
   roles:
     - geerlingguy.pip
     - geerlingguy.docker_arm
+
+- name: Setup Pi-hole on Raspberry Pi
+  hosts: froufrou.home.remigourdon.net
+  vars_files:
+    - vars/pi-hole.yml
+  roles:
+    - role: docker-compose
+      project_names:
+        - pi-hole
 
 - name: Setup main Docker host
   hosts: docker.home.remigourdon.net
