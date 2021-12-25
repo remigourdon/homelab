@@ -5,3 +5,10 @@
       - python3-apt
       - python3-pycurl
     state: present
+
+- name: Install dev packages
+  apt:
+    name:
+      - mosh
+      - tmux
+    state: present
