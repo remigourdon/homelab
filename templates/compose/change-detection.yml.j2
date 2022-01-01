@@ -1,0 +1,59 @@
+---
+# Self-hosted change detection monitoring and notification
+# https://github.com/dgtlmoon/changedetection.io
+
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: ghcr.io/dgtlmoon/changedetection.io
+    container_name: {{ project_name }}
+    networks:
+      - traefik
+      - backend
+    volumes:
+      - nfs-datastore:/datastore
+    environment:
+      PUID: 1000
+      PGID: 1000
+      BASE_URL: https://{{ project_name }}.{{ project_domain }}
+      WEBDRIVER_URL: http://browser-chrome:4444/wd/hub
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik
+      traefik.http.services.{{ project_name }}.loadbalancer.server.port: 5000
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+    restart: unless-stopped
+
+  # Used for fetching pages via WebDriver+Chrome where you need Javascript support.
+  # Does not work on rPi, https://github.com/dgtlmoon/changedetection.io/wiki/Fetching-pages-with-WebDriver
+  browser-chrome:
+    image: selenium/standalone-chrome-debug:3.141.59
+    networks:
+      - backend
+    environment:
+      - VNC_NO_PASSWORD=1
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080
+      - SCREEN_DEPTH=24
+    volumes:
+      # Workaround to avoid the browser crashing inside a docker container
+      # See https://github.com/SeleniumHQ/docker-selenium#quick-start
+      - /dev/shm:/dev/shm
+    restart: unless-stopped
+
+volumes:
+  nfs-datastore:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/datastore"
+
+networks:
+  traefik:
+    external: true
+  backend:
+    external: false

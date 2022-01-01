@@ -82,6 +82,7 @@
         - registry
         - paperless
         - uptime-kuma
+        - change-detection
 
 - name: Setup builder Docker host for Drone
   hosts: builder.home.remigourdon.net
