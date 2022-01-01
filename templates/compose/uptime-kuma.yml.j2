@@ -1,0 +1,33 @@
+---
+# Self-hosted services monitoring
+# https://github.com/louislam/uptime-kuma
+
+version: "3"
+
+services:
+  {{ project_name }}:
+    image: louislam/uptime-kuma
+    container_name: {{ project_name }}
+    networks:
+      - traefik 
+    volumes:
+      - nfs-data:/app/data
+    labels:
+      traefik.enable: true
+      traefik.http.services.{{ project_name }}.loadbalancer.server.port: 3001
+      traefik.http.routers.{{ project_name }}.rule: Host(`{{ project_name }}.{{ project_domain }}`)
+      traefik.http.routers.{{ project_name }}.entrypoints: websecure
+      traefik.http.routers.{{ project_name }}.tls.certresolver: myresolver
+    restart: unless-stopped
+
+volumes:
+  nfs-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ project_nfs_host }},soft,rw,tcp,nfsvers=4
+      device: ":{{ project_nfs_root_dir }}/{{ project_name }}/data"
+
+networks:
+  traefik:
+    external: true
