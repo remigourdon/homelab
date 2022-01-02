@@ -2,7 +2,6 @@ all:
   hosts:
     endeavour.home.remigourdon.net:
     docker.home.remigourdon.net:
-    builder.home.remigourdon.net:
     proxmox.home.remigourdon.net:
     froufrou.home.remigourdon.net:
   children:
@@ -10,7 +9,6 @@ all:
       hosts:
         endeavour.home.remigourdon.net:
         docker.home.remigourdon.net:
-        builder.home.remigourdon.net:
     tailscale:
       hosts:
         froufrou.home.remigourdon.net:

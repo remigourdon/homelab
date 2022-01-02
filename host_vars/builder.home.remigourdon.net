@@ -1,7 +1,0 @@
----
-mac_address: 76:f6:7d:e1:36:6e
-vm_id: 203
-cores: 4
-memory: 4096
-disk_gb: 50
-update: yes
