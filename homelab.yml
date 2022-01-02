@@ -63,7 +63,6 @@
   hosts: docker.home.remigourdon.net
   become: yes
   vars_files:
-    - vars/diun.yml
     - vars/cloudflare.yml
     - vars/gitea.yml
     - vars/drone.yml
@@ -72,7 +71,6 @@
     - role: docker
     - role: docker-compose
       project_names:
-        - diun
         - traefik
         - heimdall
         - unifi
@@ -88,7 +86,6 @@
   hosts: builder.home.remigourdon.net
   become: yes
   vars_files:
-    - vars/diun.yml
     - vars/drone.yml
   vars:
     docker_domain: docker.home.remigourdon.net
@@ -96,5 +93,4 @@
     - role: docker
     - role: docker-compose
       project_names:
-        - diun
         - drone-runner
