@@ -46,19 +46,6 @@
       project_names:
         - pi-hole
 
-- name: Setup Docker on Endeavour
-  hosts: endeavour.home.remigourdon.net
-  become: yes
-  vars:
-    docker_version: latest
-    docker_install_compose: true
-    docker_users:
-      - remi
-    pip_package: python3-pip
-  roles:
-    - geerlingguy.pip
-    - geerlingguy.docker
-
 - name: Setup main Docker host
   hosts: docker.home.remigourdon.net
   become: yes

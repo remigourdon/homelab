@@ -1,7 +1,0 @@
----
-mac_address: a2:eb:41:25:b0:75
-vm_id: 200
-cores: 2
-memory: 2048
-disk_gb: 10
-update: yes
