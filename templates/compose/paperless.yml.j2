@@ -24,11 +24,12 @@ services:
     restart: unless-stopped
 
   app:
-    image: jonaswinkler/paperless-ng:latest
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless-app
     environment:
       - USERMAP_UID=1000
       - USERMAP_GID=1000
+      - PAPERLESS_URL=https://paperless.docker.home.remigourdon.net
       - PAPERLESS_REDIS=redis://redis:6379
       - PAPERLESS_DBHOST=db
       - PAPERLESS_DBPASS={{ paperless_postgres_password }}
