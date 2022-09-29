@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "proxmox" {
-  pm_api_url      = "https://pve-1.home.remigourdon.net:8006/api2/json"
+  pm_api_url      = "https://pve-2.home.remigourdon.net:8006/api2/json"
   pm_debug        = true
   pm_tls_insecure = true
 }
@@ -42,7 +42,7 @@ module "k3s-node" {
   for_each     = local.nodes
   source       = "./modules/k3s-node"
   name         = each.key
-  proxmox_node = "pve-1"
+  proxmox_node = "pve-2"
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address
 }
