@@ -10,6 +10,7 @@ terraform {
 resource "proxmox_vm_qemu" "k3s-node" {
   name        = var.name
   target_node = var.proxmox_node
+  vmid        = var.vm_id
   clone       = "jammy-server-cloudimg-amd64"
   full_clone  = true
 
