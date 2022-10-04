@@ -18,3 +18,21 @@ variable "mac_address" {
   type        = string
   description = "MAC address to use for the node's main interface"
 }
+
+variable "cores" {
+  type        = number
+  description = "CPU cores to dedicate to the VM"
+  default     = 4
+}
+
+variable "memory" {
+  type        = number
+  description = "Memory to dedicate to the VM (in MB)"
+  default     = 4096
+}
+
+variable "disk_size" {
+  type        = string
+  description = "Disk size for the VM"
+  default     = "10G"
+}

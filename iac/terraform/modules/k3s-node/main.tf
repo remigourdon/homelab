@@ -17,14 +17,14 @@ resource "proxmox_vm_qemu" "k3s-node" {
   oncreate = true
   onboot   = true
 
-  cores  = 4
-  memory = 4096
+  cores  = var.cores
+  memory = var.memory
 
   scsihw = "virtio-scsi-pci"
   disk {
     type    = "scsi"
     storage = "local-zfs"
-    size    = "10G"
+    size    = var.disk_size
   }
 
   network {
