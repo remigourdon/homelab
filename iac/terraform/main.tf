@@ -26,31 +26,36 @@ provider "proxmox" {
 locals {
   pve_1_nodes = {
     "k3s-01" = {
-      vm_id        = 301
-      proxmox_node = "pve-1"
-      mac_address  = "74:3e:14:61:69:32"
+      vm_id         = 301
+      proxmox_node  = "pve-1"
+      mac_address   = "74:3e:14:61:69:32"
+      is_k3s_server = true
     },
     "k3s-02" = {
-      vm_id        = 302
-      proxmox_node = "pve-1"
-      mac_address  = "83:6b:28:c2:f2:7c"
+      vm_id         = 302
+      proxmox_node  = "pve-1"
+      mac_address   = "83:6b:28:c2:f2:7c"
+      is_k3s_server = true
     },
   }
   pve_2_nodes = {
     "k3s-03" = {
-      vm_id        = 303
-      proxmox_node = "pve-2"
-      mac_address  = "97:cd:33:40:7b:de"
+      vm_id         = 303
+      proxmox_node  = "pve-2"
+      mac_address   = "97:cd:33:40:7b:de"
+      is_k3s_server = true
     },
     "k3s-04" = {
-      vm_id        = 304
-      proxmox_node = "pve-2"
-      mac_address  = "a2:9f:15:c8:87:f6"
+      vm_id         = 304
+      proxmox_node  = "pve-2"
+      mac_address   = "a2:9f:15:c8:87:f6"
+      is_k3s_server = false
     },
     "k3s-05" = {
-      vm_id        = 305
-      proxmox_node = "pve-2"
-      mac_address  = "b6:dc:7e:00:f5:f9"
+      vm_id         = 305
+      proxmox_node  = "pve-2"
+      mac_address   = "b6:dc:7e:00:f5:f9"
+      is_k3s_server = false
     }
   }
 }
@@ -65,6 +70,8 @@ module "pve-1-nodes" {
   proxmox_node = each.value.proxmox_node
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address
+  cores        = each.value.is_k3s_server ? 2 : 4
+  memory       = each.value.is_k3s_server ? 2048 : 4096
 }
 
 module "pve-2-nodes" {
@@ -77,4 +84,6 @@ module "pve-2-nodes" {
   proxmox_node = each.value.proxmox_node
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address
+  cores        = each.value.is_k3s_server ? 2 : 4
+  memory       = each.value.is_k3s_server ? 2048 : 4096
 }
