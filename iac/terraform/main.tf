@@ -67,6 +67,7 @@ module "pve-1-nodes" {
     proxmox = proxmox.pve1
   }
   name         = each.key
+  description  = "K3s ${each.value.is_k3s_server ? "server" : "agent"}"
   proxmox_node = each.value.proxmox_node
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address
@@ -81,6 +82,7 @@ module "pve-2-nodes" {
     proxmox = proxmox.pve2
   }
   name         = each.key
+  description  = "K3s ${each.value.is_k3s_server ? "server" : "agent"}"
   proxmox_node = each.value.proxmox_node
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address

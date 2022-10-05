@@ -3,6 +3,11 @@ variable "name" {
   description = "Name of the K3s node VM"
 }
 
+variable "description" {
+  type        = string
+  description = "Name of the K3s node VM"
+}
+
 variable "proxmox_node" {
   type        = string
   description = "Proxmox node to deploy VM onto"
