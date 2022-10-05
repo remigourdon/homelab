@@ -65,6 +65,9 @@ qm set "${TEMPLATE_ID}" \
     --scsihw virtio-scsi-pci \
     --scsi0 "${VM_POOL}:vm-${TEMPLATE_ID}-disk-0"
 
+# Configure Cloud-Init
+qm set "${TEMPLATE_ID}" --ide2 "${VM_POOL}:cloudinit"
+
 # Create template from this VM
 qm template "${TEMPLATE_ID}"
 EOI
