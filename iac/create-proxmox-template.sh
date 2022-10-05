@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2087
 set -Eeuo pipefail
 
 ###############
