@@ -28,13 +28,13 @@ locals {
     "k3s-01" = {
       vm_id         = 301
       proxmox_node  = "pve-1"
-      mac_address   = "74:3e:14:61:69:32"
+      mac_address   = "74:3E:14:61:69:32"
       is_k3s_server = true
     },
     "k3s-02" = {
       vm_id         = 302
       proxmox_node  = "pve-1"
-      mac_address   = "83:6b:28:c2:f2:7c"
+      mac_address   = "83:6B:28:C2:F2:7C"
       is_k3s_server = true
     },
   }
@@ -42,19 +42,19 @@ locals {
     "k3s-03" = {
       vm_id         = 303
       proxmox_node  = "pve-2"
-      mac_address   = "97:cd:33:40:7b:de"
+      mac_address   = "97:CD:33:40:7B:DE"
       is_k3s_server = true
     },
     "k3s-04" = {
       vm_id         = 304
       proxmox_node  = "pve-2"
-      mac_address   = "a2:9f:15:c8:87:f6"
+      mac_address   = "A2:9F:15:C8:87:F6"
       is_k3s_server = false
     },
     "k3s-05" = {
       vm_id         = 305
       proxmox_node  = "pve-2"
-      mac_address   = "b6:dc:7e:00:f5:f9"
+      mac_address   = "B6:DC:7E:00:F5:F9"
       is_k3s_server = false
     }
   }
