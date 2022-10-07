@@ -4,3 +4,4 @@
   become: true
   roles:
     - timezone
+    - k3s-download
