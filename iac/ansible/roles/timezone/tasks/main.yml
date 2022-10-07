@@ -1,0 +1,5 @@
+---
+- name: Set timezone if system timezone is defined
+  timezone:
+    name: "{{ system_timezone }}"
+  when: (system_timezone is defined) and (system_timezone != "Your/Timezone")
