@@ -18,3 +18,7 @@ all:
     k3s-agents:
       hosts:
         k3s-0[4:5]:
+    k3s-cluster:
+      children:
+        k3s-servers:
+        k3s-agents:
