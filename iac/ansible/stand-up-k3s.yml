@@ -1,0 +1,6 @@
+---
+- hosts: k3s-cluster
+  gather_facts: true
+  become: true
+  roles:
+    - timezone
