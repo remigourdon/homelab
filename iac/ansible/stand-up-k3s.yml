@@ -5,3 +5,8 @@
   roles:
     - timezone
     - k3s/download
+
+- hosts: k3s-servers
+  become: true
+  roles:
+    - k3s/server

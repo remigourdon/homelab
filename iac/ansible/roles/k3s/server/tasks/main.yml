@@ -1,0 +1,38 @@
+---
+# Based on kube-vip K3s guide: https://kube-vip.io/docs/usage/k3s/
+
+- name: Create manifests directory on first server node
+  file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_hostname == hostvars[groups['k3s-servers'][0]]['ansible_hostname']
+
+- name: Copy kube-vip RBAC manifest to first server node
+  template:
+    src: kube-vip-rbac.yaml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/kube-vip-rbac.yaml
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_hostname == hostvars[groups['k3s-servers'][0]]['ansible_hostname']
+
+- name: Copy kube-vip manifest to first server node
+  template:
+    src: kube-vip.yaml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/kube-vip.yaml
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_hostname == hostvars[groups['k3s-servers'][0]]['ansible_hostname']
+
+- name: Copy kube-vip Cloud Controller manifest to first server node
+  template:
+    src: kube-vip-cloud-controller.yaml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/kube-vip-cloud-controller.yaml
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_hostname == hostvars[groups['k3s-servers'][0]]['ansible_hostname']

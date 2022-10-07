@@ -1,3 +1,8 @@
 ---
 k3s_version: v1.25.2+k3s1
+kube_vip_interface: eth0
+kube_vip_ip: 192.168.50.80
+kube_vip_version: v0.5.0
+kube_vip_cloud_controller_version: v0.0.3
+kube_vip_cloud_controller_ip_range: 192.168.50.81-192.168.50.90
 system_timezone: "America/New_York"
