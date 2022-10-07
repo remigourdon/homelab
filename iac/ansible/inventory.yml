@@ -1,0 +1,20 @@
+---
+all:
+  hosts:
+    k3s-01:
+      ansible_host: 192.168.50.51
+    k3s-02:
+      ansible_host: 192.168.50.52
+    k3s-03:
+      ansible_host: 192.168.50.53
+    k3s-04:
+      ansible_host: 192.168.50.54
+    k3s-05:
+      ansible_host: 192.168.50.55
+  children:
+    k3s-servers:
+      hosts:
+        k3s-0[1:3]:
+    k3s-agents:
+      hosts:
+        k3s-0[4:5]:
