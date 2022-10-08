@@ -12,13 +12,13 @@ all:
     k3s-05:
       ansible_host: 192.168.50.55
   children:
-    k3s-servers:
+    k3s_servers:
       hosts:
         k3s-0[1:3]:
-    k3s-agents:
+    k3s_agents:
       hosts:
         k3s-0[4:5]:
-    k3s-cluster:
+    k3s_cluster:
       children:
-        k3s-servers:
-        k3s-agents:
+        k3s_servers:
+        k3s_agents:
