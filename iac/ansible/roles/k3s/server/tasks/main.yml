@@ -39,36 +39,15 @@
 
 - name: Initialize cluster on first server node
   command:
-    cmd: >
-      systemd-run
-        --property RestartSec=2
-        --property Restart=on-failure
-        --unit=k3s-init
-        k3s server
-          --cluster-init
-          --token "{{ k3s_token }}"
-          --tls-san {{ kube_vip_ip }}
-          --disable servicelb
-          --disable traefik
+    cmd: "systemd-run
+        --property RestartSec=2 \
+        --property Restart=on-failure \
+        --unit=k3s-init \
+        k3s server {{ k3s_server_first_arg }} \
+          --token {{ k3s_token }} \
+          --tls-san {{ kube_vip_ip }} \
+          --disable servicelb \
+          --disable traefik"
     creates: /etc/systemd/system/k3s.service
   args:
     warn: false  # The ansible systemd module does not support transient units
-  when: ansible_hostname == hostvars[groups['k3s_servers'][0]]['ansible_hostname']
-
-- name: Join other server nodes to cluster
-  command:
-    cmd: >
-      systemd-run
-        --property RestartSec=2
-        --property Restart=on-failure
-        --unit=k3s-init
-        k3s server
-          --server "https://{{ hostvars[groups['k3s_servers'][0]].k3s_node_ip }}:6443"
-          --token "{{ k3s_token }}"
-          --tls-san {{ kube_vip_ip }}
-          --disable servicelb
-          --disable traefik
-    creates: /etc/systemd/system/k3s.service
-  args:
-    warn: false  # The ansible systemd module does not support transient units
-  when: ansible_hostname != hostvars[groups['k3s_servers'][0]]['ansible_hostname']
