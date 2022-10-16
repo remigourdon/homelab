@@ -44,6 +44,9 @@
         --property Restart=on-failure \
         --unit=k3s-init \
         k3s server {{ k3s_server_first_arg }} \
+          --node-taint node-role.kubernetes.io/master=true:NoSchedule \
+          --flannel-iface={{ kube_vip_interface }} \
+          --node-ip={{ k3s_node_ip }} \
           --token {{ k3s_token }} \
           --tls-san {{ kube_vip_ip }} \
           --disable servicelb \
