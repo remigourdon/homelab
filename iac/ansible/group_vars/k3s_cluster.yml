@@ -30,4 +30,7 @@ k3s_extra_server_args: >-
   --disable servicelb
   --disable traefik
 
+k3s_extra_agent_args: >-
+  {{ k3s_extra_args }}
+
 system_timezone: "America/New_York"

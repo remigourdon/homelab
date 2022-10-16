@@ -11,3 +11,8 @@
   become: true
   roles:
     - k3s/server
+
+- hosts: k3s_agents
+  become: true
+  roles:
+    - k3s/agent
