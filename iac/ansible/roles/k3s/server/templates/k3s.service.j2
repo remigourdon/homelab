@@ -23,8 +23,4 @@ RestartSec=5s
 ExecStartPre=/bin/sh -xc '! /usr/bin/systemctl is-enabled --quiet nm-cloud-setup.service'
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
-ExecStart=/usr/local/bin/k3s agent \
-    --server https://{{ kube_vip_ip | ansible.utils.ipwrap }}:6443 \
-    --token {{ hostvars[groups['k3s_servers'][0]]['token'] | default(k3s_token) }} \
-    --flannel-iface={{ kube_vip_interface }} \
-    --node-ip={{ k3s_node_ip }}
+ExecStart=/usr/local/bin/k3s server {{ k3s_extra_server_args }}

@@ -39,18 +39,11 @@
 
 - name: Initialize cluster on first server node
   command:
-    cmd: "systemd-run
+    cmd: "systemd-run \
         --property RestartSec=2 \
         --property Restart=on-failure \
         --unit=k3s-init \
-        k3s server {{ k3s_server_first_arg }} \
-          --node-taint node-role.kubernetes.io/master=true:NoSchedule \
-          --flannel-iface={{ kube_vip_interface }} \
-          --node-ip={{ k3s_node_ip }} \
-          --token {{ k3s_token }} \
-          --tls-san {{ kube_vip_ip }} \
-          --disable servicelb \
-          --disable traefik"
+        k3s server {{ k3s_server_first_arg }} --token {{ k3s_token }} {{ k3s_extra_server_args }}"
     creates: /etc/systemd/system/k3s.service
   args:
     warn: false  # The ansible systemd module does not support transient units
@@ -76,8 +69,8 @@
 - name: Copy K3s service file
   register: k3s_service
   template:
-    src: "k3s.service.j2"
-    dest: /etc/systemd/system//k3s.service
+    src: k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
     owner: root
     group: root
     mode: 0644

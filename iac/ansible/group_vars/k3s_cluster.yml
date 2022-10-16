@@ -19,4 +19,15 @@ kube_vip_cloud_controller_ip_range: 192.168.50.81-192.168.50.90
 
 k3s_node_ip: "{{ ansible_facts[kube_vip_interface]['ipv4']['address'] }}"
 
+k3s_extra_args: >-
+  --flannel-iface={{ kube_vip_interface }}
+  --node-ip={{ k3s_node_ip }}
+
+k3s_extra_server_args: >-
+  {{ k3s_extra_args }}
+  --node-taint node-role.kubernetes.io/master=true:NoSchedule
+  --tls-san {{ kube_vip_ip }}
+  --disable servicelb
+  --disable traefik
+
 system_timezone: "America/New_York"
