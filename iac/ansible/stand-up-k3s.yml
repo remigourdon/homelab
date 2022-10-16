@@ -4,6 +4,7 @@
   become: true
   roles:
     - timezone
+    - networking
     - k3s/download
 
 - hosts: k3s_servers
