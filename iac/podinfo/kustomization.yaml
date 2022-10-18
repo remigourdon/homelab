@@ -3,4 +3,18 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - service.yaml
-
+patchesStrategicMerge:
+  - |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: podinfo
+    spec:
+      type: LoadBalancer
+  - |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: podinfo
+    spec:
+      replicas: 2
