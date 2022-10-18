@@ -1,0 +1,36 @@
+---
+k3s_version: v1.25.2+k3s1
+
+k3s_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66623034636130666430376361333466356334333262363462666534383131623332303034623030
+          3030643839363364313634333930343166613265326134650a373736626638316139333730636364
+          37633166316435343336646665343961393562666236646232356564343661663536343939396461
+          3933353331323930320a363034323166356135343065373235313239303565376265316532383637
+          38633166653333656365303136356166303334346238303866383265323533313533613634643563
+          64643837393962306263396638643934356366373539336437616136376436313133336466643230
+          353733623963323839666334313263376437
+
+kube_vip_interface: eth0
+kube_vip_ip: 192.168.50.80
+kube_vip_version: v0.5.0
+kube_vip_cloud_controller_version: v0.0.3
+kube_vip_cloud_controller_ip_range: 192.168.50.81-192.168.50.90
+
+k3s_node_ip: "{{ ansible_facts[kube_vip_interface]['ipv4']['address'] }}"
+
+k3s_extra_args: >-
+  --flannel-iface={{ kube_vip_interface }}
+  --node-ip={{ k3s_node_ip }}
+
+k3s_extra_server_args: >-
+  {{ k3s_extra_args }}
+  --node-taint node-role.kubernetes.io/master=true:NoSchedule
+  --tls-san {{ kube_vip_ip }}
+  --disable servicelb
+  --disable traefik
+
+k3s_extra_agent_args: >-
+  {{ k3s_extra_args }}
+
+system_timezone: "America/New_York"
