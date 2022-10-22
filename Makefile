@@ -1,11 +1,37 @@
+all: homelab
+
+###
+### Boostrap homelab
+###
+
 deps:
 	pip install --upgrade pip
 	pip install -r requirements.txt
 
-init-terraform:
+infrastructure:
 	$(MAKE) -C iac/terraform init
+	$(MAKE) -C iac/terraform apply
 
-init: init-terraform
+cluster:
+	$(MAKE) -C iac/ansible stand-up
+
+homelab: deps infrastructure cluster
+
+###
+### Teardown homelab
+###
+
+teardown-cluster:
+	$(MAKE) -C iac/ansible reset
+
+teardown-infrastructure:
+	$(MAKE) -C iac/terraform destroy
+
+teardown-homelab: teardown-cluster teardown-infrastructure
+
+###
+### Lint and format
+###
 
 lint-ansible:
 	$(MAKE) -C iac/ansible lint
