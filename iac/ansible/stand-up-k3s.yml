@@ -5,6 +5,7 @@
   roles:
     - timezone
     - networking
+    - nfs
     - k3s/download
 
 - hosts: k3s_servers
