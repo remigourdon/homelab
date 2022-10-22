@@ -9,6 +9,7 @@ format:
 .PHONY: apply
 apply:
 	terraform apply -auto-approve -parallelism=3
+	sleep 15
 
 .PHONY: destroy
 destroy:
