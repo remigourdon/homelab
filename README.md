@@ -58,6 +58,20 @@ export KUBECONFIG="$HOME/.kube/lab-config"
 kubectl cluster-info
 ```
 
+## Bootstrap Flux
+
+Flux is used for GitOps and is bootstrapped as follows, following the instructions [on this page](https://fluxcd.io/flux/installation/#github-and-github-enterprise):
+
+```sh
+export GITHUB_TOKEN=<your-token>
+flux bootstrap github \
+    --owner=remigourdon \
+    --repository=homelab \
+    --path=clusters/lab \
+    --personal \
+    --private
+```
+
 ## Test load balancers
 
 ### Control plane
