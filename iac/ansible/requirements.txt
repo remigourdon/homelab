@@ -1,3 +1,0 @@
-ansible-core>=2.13.2
-ansible-lint>=6.6.0
-netaddr>=0.8.0
