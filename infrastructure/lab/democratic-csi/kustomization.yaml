@@ -4,6 +4,7 @@ resources:
   - namespace.yaml
   - helm-repository.yaml
   - truenas-nfs.yaml
+  - secrets.yaml
 configMapGenerator:
   - name: democratic-csi-config
     files:
