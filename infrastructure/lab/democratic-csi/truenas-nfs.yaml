@@ -21,9 +21,5 @@ spec:
       valuesKey: truenas-nfs-config.yaml
     - kind: Secret
       name: democratic-csi-secrets
-      valuesKey: api-key
-      targetPath: driver.config.httpConnection.apiKey
-    - kind: Secret
-      name: democratic-csi-secrets
-      valuesKey: ssh-password
-      targetPath: driver.config.sshConnection.password
+      valuesKey: password
+      targetPath: driver.config.httpConnection.password
