@@ -8,3 +8,5 @@ configMapGenerator:
   - name: democratic-csi-config
     files:
       - truenas-nfs-config.yaml
+configurations:
+  - kustomizeconfig.yaml
