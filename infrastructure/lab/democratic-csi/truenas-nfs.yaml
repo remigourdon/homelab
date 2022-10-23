@@ -26,4 +26,4 @@ spec:
     - kind: Secret
       name: democratic-csi-secrets
       valuesKey: ssh-password
-      targetPath: driver.config.httpConnection.apiKey
+      targetPath: driver.config.sshConnection.password
