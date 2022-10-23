@@ -83,11 +83,11 @@ cat age.agekey |
         --from-file=age.agekey=/dev/stdin
 ```
 
-Files under `clusters/lab/secrets` can be encrypted in place using the SOPS config file at `clusters/lab/.sops.yaml`:
+Secrets can be encrypted as follows:
 
 ```sh
-cd clusters/lab/secrets
 sops \
+    --config clusters/lab/.sops.yaml \
 	--encrypt \
 	--in-place my-secret.yaml
 ```
