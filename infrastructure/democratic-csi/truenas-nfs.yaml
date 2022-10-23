@@ -19,3 +19,11 @@ spec:
     - kind: ConfigMap
       name: democratic-csi-config
       valuesKey: truenas-nfs-config.yaml
+    - kind: Secret
+      name: democratic-csi-secrets
+      valuesKey: api-key
+      targetPath: driver.config.httpConnection.apiKey
+    - kind: Secret
+      name: democratic-csi-secrets
+      valuesKey: ssh-password
+      targetPath: driver.config.httpConnection.apiKey
