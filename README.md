@@ -72,6 +72,26 @@ flux bootstrap github \
     --private
 ```
 
+[Age](https://github.com/FiloSottile/age) is used with [Mozilla SOPS](https://github.com/mozilla/sops) to encrypt secrets, as described on [this page](https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age).
+
+The private key should be retrieved from the safe storage and a secret should be created from it after bootstrapping the cluster, as follows:
+
+```sh
+cat age.agekey |
+    kubectl create secret generic sops-age \
+        --namespace=flux-system \
+        --from-file=age.agekey=/dev/stdin
+```
+
+Files under `clusters/lab/secrets` can be encrypted in place using the SOPS config file at `clusters/lab/.sops.yaml`:
+
+```sh
+cd clusters/lab/secrets
+sops \
+	--encrypt \
+	--in-place my-secret.yaml
+```
+
 ## Test load balancers
 
 ### Control plane
