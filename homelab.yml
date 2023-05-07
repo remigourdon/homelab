@@ -60,7 +60,6 @@
         - heimdall
         - unifi
         - calibre-web
-        - registry
         - paperless
         - uptime-kuma
         - change-detection
