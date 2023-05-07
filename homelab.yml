@@ -51,7 +51,6 @@
   become: yes
   vars_files:
     - vars/cloudflare.yml
-    - vars/gitea.yml
     - vars/paperless.yml
   roles:
     - role: docker
@@ -61,7 +60,6 @@
         - heimdall
         - unifi
         - calibre-web
-        - gitea
         - registry
         - paperless
         - uptime-kuma
