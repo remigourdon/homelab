@@ -5,6 +5,7 @@ all:
     scale-one.home.remigourdon.net:
     scale-two.home.remigourdon.net:
     kasm.home.remigourdon.net:
+    windmill.home.remigourdon.net:
   children:
     vms:
       hosts:
