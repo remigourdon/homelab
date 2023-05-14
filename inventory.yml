@@ -1,7 +1,6 @@
 all:
   hosts:
     docker.home.remigourdon.net:
-    proxmox.home.remigourdon.net:
     froufrou.home.remigourdon.net:
     scale-one.home.remigourdon.net:
     scale-two.home.remigourdon.net:
