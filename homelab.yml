@@ -63,3 +63,11 @@
         - paperless
         - uptime-kuma
         - change-detection
+
+- name: Setup Docker host for Windmill
+  hosts: windmill.home.remigourdon.net
+  become: yes
+  roles:
+    - role: docker
+    - role: docker-compose
+      project_names: []
