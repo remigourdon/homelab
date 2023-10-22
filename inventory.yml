@@ -1,7 +1,6 @@
 all:
   hosts:
     docker.home.remigourdon.net:
-    froufrou.home.remigourdon.net:
     scale-one.home.remigourdon.net:
     scale-two.home.remigourdon.net:
     kasm.home.remigourdon.net:
@@ -12,6 +11,5 @@ all:
         docker.home.remigourdon.net:
     tailscale:
       hosts:
-        froufrou.home.remigourdon.net:
         scale-one.home.remigourdon.net:
         scale-two.home.remigourdon.net:
