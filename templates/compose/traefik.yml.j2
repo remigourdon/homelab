@@ -3,10 +3,10 @@ version: "3"
 
 services:
   {{ project_name }}:
-    image: traefik:v2.8
+    image: traefik:v2.10
     container_name: traefik
     networks:
-      - traefik 
+      - traefik
     ports:
       - 80:80
       - 443:443
