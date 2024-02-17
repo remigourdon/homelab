@@ -32,70 +32,70 @@ provider "proxmox" {
 
 locals {
   talos_iso = "nfs-isos:iso/talos-v1.6.4-metal-amd64.iso"
-  pve_1_nodes = {
-    "cluster-01" = {
-      vm_id            = 301
-      proxmox_node     = "pve-1"
-      mac_address      = "74:3E:14:61:69:32"
-      is_control_plane = true
+
+  controlplanes = {
+    "clarke-01" = {
+      vm_id        = 301
+      proxmox_node = "pve-1"
+      mac_address  = "74:3E:14:61:69:32"
     },
-    "cluster-02" = {
-      vm_id            = 302
-      proxmox_node     = "pve-1"
-      mac_address      = "82:6B:28:C2:F2:7C"
-      is_control_plane = true
+    "clarke-02" = {
+      vm_id        = 302
+      proxmox_node = "pve-1"
+      mac_address  = "82:6B:28:C2:F2:7C"
     },
+    "clarke-03" = {
+      vm_id        = 303
+      proxmox_node = "pve-2"
+      mac_address  = "96:CD:33:40:7B:DE"
+    }
   }
-  pve_2_nodes = {
-    "cluster-03" = {
-      vm_id            = 303
-      proxmox_node     = "pve-2"
-      mac_address      = "96:CD:33:40:7B:DE"
-      is_control_plane = true
+  workers = {
+    "clarke-04" = {
+      vm_id        = 304
+      proxmox_node = "pve-2"
+      mac_address  = "A2:9F:15:C8:87:F6"
     },
-    "cluster-04" = {
-      vm_id            = 304
-      proxmox_node     = "pve-2"
-      mac_address      = "A2:9F:15:C8:87:F6"
-      is_control_plane = false
-    },
-    "cluster-05" = {
-      vm_id            = 305
-      proxmox_node     = "pve-2"
-      mac_address      = "B6:DC:7E:00:F5:F9"
-      is_control_plane = false
+    "clarke-05" = {
+      vm_id        = 305
+      proxmox_node = "pve-2"
+      mac_address  = "B6:DC:7E:00:F5:F9"
     }
   }
 }
 
-module "pve-1-nodes" {
-  source   = "./modules/talos-node"
-  for_each = local.pve_1_nodes
+module "pve1-vms" {
+  source   = "./modules/proxmox-vm"
+  for_each = { for k, v in merge(local.controlplanes, local.workers) : k => v if v.proxmox_node == "pve-1" }
+
   providers = {
     proxmox = proxmox.pve1
   }
+
   name         = each.key
-  description  = "K8s ${each.value.is_control_plane ? "control-plane" : "worker"}"
+  description  = "K8s node"
   proxmox_node = each.value.proxmox_node
   iso          = local.talos_iso
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address
-  cores        = each.value.is_control_plane ? 2 : 4
-  memory       = each.value.is_control_plane ? 2048 : 4096
+  cores        = contains(keys(local.controlplanes), each.key) ? 2 : 4
+  memory       = contains(keys(local.controlplanes), each.key) ? 2048 : 4096
 }
 
-module "pve-2-nodes" {
-  source   = "./modules/talos-node"
-  for_each = local.pve_2_nodes
+module "pve2-vms" {
+  source   = "./modules/proxmox-vm"
+  for_each = { for k, v in merge(local.controlplanes, local.workers) : k => v if v.proxmox_node == "pve-2" }
+
   providers = {
     proxmox = proxmox.pve2
   }
+
   name         = each.key
-  description  = "K8s ${each.value.is_control_plane ? "control-plane" : "worker"}"
+  description  = "K8s node"
   proxmox_node = each.value.proxmox_node
   iso          = local.talos_iso
   vm_id        = each.value.vm_id
   mac_address  = each.value.mac_address
-  cores        = each.value.is_control_plane ? 2 : 4
-  memory       = each.value.is_control_plane ? 2048 : 4096
+  cores        = contains(keys(local.controlplanes), each.key) ? 2 : 4
+  memory       = contains(keys(local.controlplanes), each.key) ? 2048 : 4096
 }

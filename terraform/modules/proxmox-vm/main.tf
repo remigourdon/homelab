@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-resource "proxmox_vm_qemu" "talos-node" {
+resource "proxmox_vm_qemu" "this" {
   name = var.name
   desc = var.description
 

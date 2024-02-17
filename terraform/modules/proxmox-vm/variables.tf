@@ -1,11 +1,11 @@
 variable "name" {
   type        = string
-  description = "Name of the node VM"
+  description = "Name of the VM"
 }
 
 variable "description" {
   type        = string
-  description = "Name of the node VM"
+  description = "Description of the VM"
 }
 
 variable "proxmox_node" {
@@ -26,7 +26,7 @@ variable "vm_id" {
 
 variable "mac_address" {
   type        = string
-  description = "MAC address to use for the node's main interface"
+  description = "MAC address to use for the VM's main interface"
 }
 
 variable "cores" {
