@@ -3,13 +3,13 @@ version: "3"
 
 services:
   {{ project_name }}:
-    image: linuxserver/unifi-controller:latest
+    image: linuxserver/unifi-controller:7.5.187
     container_name: unifi
     environment:
       - PUID=1000
       - PGID=1000
     networks:
-      - traefik 
+      - traefik
     ports:
       - 8080:8080
     volumes:

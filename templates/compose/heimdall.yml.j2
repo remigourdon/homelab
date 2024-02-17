@@ -3,14 +3,14 @@ version: "3"
 
 services:
   {{ project_name }}:
-    image: lscr.io/linuxserver/heimdall:latest
+    image: lscr.io/linuxserver/heimdall:2.5.6
     container_name: heimdall
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
     networks:
-      - traefik 
+      - traefik
     volumes:
       - nfs-config:/config
     labels:

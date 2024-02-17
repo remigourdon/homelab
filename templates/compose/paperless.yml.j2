@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: ghcr.io/paperless-ngx/paperless-ngx:1.17.4
     container_name: paperless-app
     environment:
       - USERMAP_UID=1000
