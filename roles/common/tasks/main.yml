@@ -14,7 +14,7 @@
     state: present
 
 - name: Install SSH keys from GitHub
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ ansible_user }}"
     state: present
     key: https://github.com/remigourdon.keys
