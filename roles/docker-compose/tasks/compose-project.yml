@@ -18,7 +18,7 @@
     group: "{{ ansible_user }}"
 
 - name: Install with Docker Compose
-  docker_compose:
+  community.docker.docker_compose_v2:
     project_src: "{{ project_dir_root }}/{{ project_name }}"
     state: present
-    pull: "{{ docker_pull | default('no') }}"
+    pull: "{{ docker_pull | default('missing') }}"
