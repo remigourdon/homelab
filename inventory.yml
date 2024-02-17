@@ -1,13 +1,7 @@
 all:
   hosts:
     docker.home.remigourdon.net:
-    scale-one.home.remigourdon.net:
-    scale-two.home.remigourdon.net:
   children:
     vms:
       hosts:
         docker.home.remigourdon.net:
-    tailscale:
-      hosts:
-        scale-one.home.remigourdon.net:
-        scale-two.home.remigourdon.net:

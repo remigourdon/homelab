@@ -7,22 +7,6 @@
     - role: update
       tags: update,never
 
-- name: Setup tailscale
-  hosts: tailscale
-  become: yes
-  tasks:
-    - name: Configure Sysctl
-      sysctl:
-        name: net.ipv4.ip_forward
-        value: 1
-        state: present
-        ignoreerrors: true
-        sysctl_set: true
-      when: tailscale_subnet_router
-    - name: Configure Tailscale
-      include_role:
-        name: artis3n.tailscale
-
 - name: Setup main Docker host
   hosts: docker.home.remigourdon.net
   become: yes
