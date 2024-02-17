@@ -1,6 +1,0 @@
----
-project_template_dir: "{{ playbook_dir }}/templates/compose"
-project_dir_root: "/home/{{ ansible_user }}"
-project_domain: docker.home.remigourdon.net
-project_nfs_host: truenas.home.remigourdon.net
-project_nfs_root_dir: /mnt/NAS/nfs-docker
