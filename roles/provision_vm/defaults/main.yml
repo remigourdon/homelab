@@ -1,8 +1,0 @@
----
-template_name: ubuntu-server-20.04
-storage: local-zfs
-format: raw
-cores: 1
-memory: 2048
-network_interface: 'virtio,bridge=vmbr0'
-on_boot: yes

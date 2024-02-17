@@ -1,7 +1,3 @@
 all:
   hosts:
     docker.home.remigourdon.net:
-  children:
-    vms:
-      hosts:
-        docker.home.remigourdon.net:
