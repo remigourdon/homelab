@@ -6,6 +6,12 @@
       - python3-pycurl
     state: present
 
+- name: Install QEMU guest agent
+  apt:
+    name:
+      - qemu-guest-agent
+    state: present
+
 - name: Install dev packages
   apt:
     name:
