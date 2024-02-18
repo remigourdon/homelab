@@ -26,6 +26,9 @@ resource "talos_machine_configuration_apply" "controlplane" {
   for_each                    = var.node_data.controlplanes
   node                        = each.key
   config_patches = [
+    templatefile("${path.module}/templates/configure-vip.yaml.tmpl", {
+      vip = var.cluster_vip
+    }),
     file("${path.module}/files/cp-scheduling.yaml"),
   ]
 }

@@ -10,10 +10,6 @@ terraform {
       source  = "Telmate/proxmox"
       version = "2.9.14"
     }
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
-    }
     talos = {
       source  = "siderolabs/talos"
       version = "0.4.0"
@@ -41,8 +37,6 @@ provider "proxmox" {
   pm_debug        = true
   pm_tls_insecure = true
 }
-
-provider "cloudflare" {}
 
 module "pve1-vms" {
   source   = "./modules/proxmox-vm"
@@ -80,21 +74,12 @@ module "pve2-vms" {
   memory       = contains(keys(var.nodes.controlplanes), each.key) ? 2048 : 4096
 }
 
-resource "cloudflare_record" "a" {
-  for_each = var.nodes.controlplanes
-  zone_id  = "413c8a3d5eb7bb9bf47048173a04acaa"
-  name     = var.cluster_name
-  value    = each.value.ip_address
-  type     = "A"
-  ttl      = 3600
-  proxied  = false
-}
-
 module "cluster" {
   source     = "./modules/talos-cluster"
   depends_on = [module.pve1-vms, module.pve2-vms]
 
   cluster_name     = var.cluster_name
   cluster_endpoint = local.cluster_endpoint
+  cluster_vip      = var.cluster_vip
   node_data        = var.nodes
 }

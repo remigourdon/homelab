@@ -8,6 +8,11 @@ variable "cluster_endpoint" {
   type        = string
 }
 
+variable "cluster_vip" {
+  description = "The Virtual (shared) IP for the Talos cluster"
+  type        = string
+}
+
 variable "node_data" {
   description = "A map of node data"
   type = object({
