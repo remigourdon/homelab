@@ -1,10 +1,16 @@
 # Terraform
 
-Terraform is used here to provision VMs on Proxmox.
+Terraform is used here to provision VMs on Proxmox and to bootstrap a Talos cluster on them.
 
 ## Documentation
 
-+ Proxmox provider: https://github.com/Telmate/terraform-provider-proxmox/blob/v3.0.1-rc1/docs/index.md
++ Proxmox provider:
+    + https://registry.terraform.io/providers/Telmate/proxmox/latest/docs
+    + https://github.com/Telmate/terraform-provider-proxmox/blob/master/docs/index.md
++ Talos provider:
+    + https://registry.terraform.io/providers/siderolabs/talos/latest/docs
+    + https://github.com/siderolabs/contrib/tree/main/examples/terraform
+
 
 ## Provide Terraform access to Proxmox
 
