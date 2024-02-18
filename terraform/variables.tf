@@ -25,11 +25,13 @@ variable "nodes" {
       vm_id        = number
       proxmox_node = string
       mac_address  = string
+      ip_address   = string
     }))
     workers = map(object({
       vm_id        = number
       proxmox_node = string
       mac_address  = string
+      ip_address   = string
     }))
   })
 }
