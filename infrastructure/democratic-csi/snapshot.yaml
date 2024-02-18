@@ -1,0 +1,8 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: test-claim-nfs-snapshot
+spec:
+  volumeSnapshotClassName: nfs
+  source:
+    persistentVolumeClaimName: test-claim-nfs
