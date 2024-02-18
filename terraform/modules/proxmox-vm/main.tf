@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "Telmate/proxmox"
-      version = "3.0.1-rc1"
+      version = "2.9.14"
     }
   }
 }
@@ -15,22 +15,20 @@ resource "proxmox_vm_qemu" "this" {
   vmid        = var.vm_id
   iso         = var.iso
 
-  vm_state = "running"
+  oncreate = true
   onboot   = true
 
   cores  = var.cores
   memory = var.memory
 
+  qemu_os = "l26"
+  agent   = 0
+
   scsihw = "virtio-scsi-pci"
-  disks {
-    scsi {
-      scsi0 {
-        disk {
-          storage = "local-zfs"
-          size    = var.disk_size
-        }
-      }
-    }
+  disk {
+    type    = "scsi"
+    storage = "local-zfs"
+    size    = var.disk_size
   }
 
   network {

@@ -42,7 +42,7 @@ variable "memory" {
 }
 
 variable "disk_size" {
-  type        = number
-  description = "Disk size for the VM in Gigabytes"
-  default     = 10
+  type        = string
+  description = "Disk size for the VM"
+  default     = "10G"
 }
