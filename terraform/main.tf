@@ -22,6 +22,10 @@ terraform {
   required_version = "~> 1.7.3"
 }
 
+locals {
+  cluster_endpoint = "https://${var.cluster_name}.${var.domain}:6443"
+}
+
 # Proxmox server on HPE Proliant
 provider "proxmox" {
   alias           = "pve1"
@@ -84,4 +88,13 @@ resource "cloudflare_record" "a" {
   type     = "A"
   ttl      = 3600
   proxied  = false
+}
+
+module "cluster" {
+  source     = "./modules/talos-cluster"
+  depends_on = [module.pve1-vms, module.pve2-vms]
+
+  cluster_name     = var.cluster_name
+  cluster_endpoint = local.cluster_endpoint
+  node_data        = var.nodes
 }

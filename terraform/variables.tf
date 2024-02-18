@@ -1,3 +1,8 @@
+variable "domain" {
+  type        = string
+  description = "Domain name"
+}
+
 variable "cluster_name" {
   type        = string
   description = "Name of the cluster"
